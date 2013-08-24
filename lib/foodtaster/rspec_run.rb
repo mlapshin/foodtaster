@@ -31,6 +31,7 @@ module Foodtaster
     def stop
       puts "" # newline after rspec output
       terminate_server
+      shutdown_required_vms if Foodtaster.config.shutdown_vms
     end
 
     def client
@@ -51,6 +52,10 @@ module Foodtaster
       self.required_vm_names.each { |vm_name| get_vm(vm_name).prepare }
     end
 
+    def shutdown_required_vms
+      self.required_vm_names.each { |vm_name| get_vm(vm_name).shutdown }
+    end
+
     def start_server_and_connect_client(drb_port = Foodtaster.config.drb_port)
       vagrant_binary = Foodtaster.config.vagrant_binary
       vagrant_server_cmd = "#{vagrant_binary} foodtaster-server #{drb_port.to_s} &> /tmp/vagrant-foodtaster-server-output.txt"
@@ -69,7 +74,7 @@ module Foodtaster
       rescue DRb::DRbConnError => e
         Foodtaster.logger.debug "DRb connection failed: #{e.message}"
         retry_count += 1
-        retry if retry_count < 10
+        retry if retry_count < 20
       end
 
       if @client.nil?

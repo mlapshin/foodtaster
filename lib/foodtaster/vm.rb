@@ -6,8 +6,8 @@ module Foodtaster
       attr_reader :exit_status
 
       def initialize(hash)
-        @stderr = hash[:stderr]
-        @stdout = hash[:stdout]
+        @stderr = hash[:stderr].to_s
+        @stdout = hash[:stdout].to_s
         @exit_status = hash[:exit_status]
       end
 
@@ -32,6 +32,11 @@ module Foodtaster
       @client.prepare_vm(name)
     end
 
+    def shutdown
+      Foodtaster.logger.debug "#{name}: Shutting down VM"
+      @client.shutdown_vm(name)
+    end
+
     def rollback
       Foodtaster.logger.info "#{name}: Rollbacking VM"
       @client.rollback_vm(name)
@@ -42,8 +47,8 @@ module Foodtaster
       exec_result_hash = @client.execute_command_on_vm(name, command)
 
       Foodtaster.logger.debug "#{name}: Finished with #{exec_result_hash[:exit_status]}"
-      Foodtaster.logger.debug "#{name}: STDOUT: #{exec_result_hash[:stdout].chomp}"
-      Foodtaster.logger.debug "#{name}: STDERR: #{exec_result_hash[:stderr].chomp}"
+      Foodtaster.logger.debug "#{name}: STDOUT: #{exec_result_hash[:stdout].to_s.chomp}"
+      Foodtaster.logger.debug "#{name}: STDERR: #{exec_result_hash[:stderr].to_s.chomp}"
 
       ExecResult.new(exec_result_hash)
     end
