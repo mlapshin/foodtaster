@@ -10,10 +10,12 @@ Gem::Specification.new do |gem|
   gem.email         = ["mikhail.a.lapshin@gmail.com"]
   gem.description   = %q{RSpec for Chef cookbooks run on Vagrant}
   gem.summary       = %q{Foodtaster is a library for testing your Chef code with RSpec.}
-  gem.homepage      = ""
+  gem.homepage      = "http://github.com/mlapshin/foodtaster"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
+  gem.add_dependency('rspec', '>= 2.10.0')
 end
