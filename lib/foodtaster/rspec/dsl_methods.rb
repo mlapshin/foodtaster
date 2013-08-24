@@ -1,8 +1,12 @@
 module Foodtaster
   module RSpec
     module DslMethods
-      def run_chef_on(vm_name, &block)
+      def require_vm(vm_name)
         Foodtaster::RSpecRun.current.require_vm(vm_name)
+      end
+
+      def run_chef_on(vm_name, &block)
+        require_vm(vm_name)
 
         skip_rollback = false
 
