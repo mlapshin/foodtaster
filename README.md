@@ -52,7 +52,9 @@ end
 
 First, install Vagrant for your system following [official
 instructions](http://docs.vagrantup.com/v2/installation/index.html).
-Then, install two plugins: `sahara` and `vagrant-foodtaster-server`:
+Then, install two Vagrant plugins:
+[sahara](http://github.com/jedi4ever/sahara) and
+[vagrant-foodtaster-server](http://github.com/mlapshin/vagrant-foodtaster-server):
 
     vagrant plugin install sahara
     vagrant plugin install vagrant-foodtaster-server
@@ -60,6 +62,10 @@ Then, install two plugins: `sahara` and `vagrant-foodtaster-server`:
 That's all, you are ready to go.
 
 ## Usage
+
+Check out [foodtaster-example
+repository](http://github.com/mlapshin/foodtaster-example) or
+follow this instructions.
 
 In your Chef repository, create a basic Gemfile:
 
