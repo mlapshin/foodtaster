@@ -72,6 +72,24 @@ Then, create a Vagrantfile describing VMs you need for specs. Here is
 [example
 Vagrantfile](http://raw.github.com/mlapshin/foodtaster-example/master/Vagrantfile).
 
+Create `spec` folder with `spec_helper.rb` file:
+
+```ruby
+require 'foodtaster'
+
+RSpec.configure do |config|
+  config.color_enabled = true
+end
+
+Foodtaster.configure do |config|
+  config.log_level = :info
+end
+```
+
+You are ready to write cookbook specs. Run them as usual with command:
+
+    bundle exec rspec spec
+
 ## Contributing
 
 1. Fork it
@@ -79,3 +97,8 @@ Vagrantfile](http://raw.github.com/mlapshin/foodtaster-example/master/Vagrantfil
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## License
+
+Foodtaster is distributed under [MIT
+License](http://raw.github.com/mlapshin/foodtaster/master/LICENSE).
