@@ -5,10 +5,9 @@ module Foodtaster
         Foodtaster::RSpecRun.current.require_vm(vm_name)
       end
 
-      def run_chef_on(vm_name, &block)
+      def run_chef_on(vm_name, options = {}, &block)
         require_vm(vm_name)
-
-        skip_rollback = false
+        skip_rollback = Foodtaster.config.skip_rollback || options[:skip_rollback]
 
         before(:all) do
           vm = get_vm(vm_name)
