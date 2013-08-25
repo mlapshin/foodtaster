@@ -7,8 +7,16 @@ module Foodtaster
 
       def run_chef_on(vm_name, &block)
         chef_config = ChefConfig.new.tap{ |conf| block.call(conf) }.to_hash
+        @previous_chef_config = chef_config
+
         vm = get_vm(vm_name)
         vm.run_chef(chef_config)
+      end
+
+      def rerun_chef_on(vm_name)
+        raise RuntimeError, "No previous Chef run was made" unless @previous_chef_config
+        vm = get_vm(vm_name)
+        vm.run_chef(@previous_chef_config)
       end
 
       private

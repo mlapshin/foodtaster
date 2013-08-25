@@ -6,6 +6,7 @@ module Foodtaster
       @required_vm_names = Set.new
       @client = nil
       @server_pid = nil
+      @stopped = false
     end
 
     def require_vm(vm_name)
@@ -29,9 +30,12 @@ module Foodtaster
     end
 
     def stop
+      return if @stopped
+
       puts "" # newline after rspec output
-      terminate_server
       shutdown_required_vms if Foodtaster.config.shutdown_vms
+      terminate_server
+      @stopped = true
     end
 
     def client
