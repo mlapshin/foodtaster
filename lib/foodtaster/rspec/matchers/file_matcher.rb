@@ -28,6 +28,12 @@ module Foodtaster
             @results[:owner] = (@actual_owner.to_s == @owner.to_s)
           end
 
+          if @mode
+            @actual_mode = vm.execute("sudo stat #{@path} -c \"%a\"").stdout.chomp
+
+            @results[:mode] = (@actual_mode == @mode.to_s(8))
+          end
+
           @results.values.all?
         end
 
@@ -43,10 +49,17 @@ module Foodtaster
           self
         end
 
+        def with_mode(mode)
+          @mode = mode
+
+          self
+        end
+
         def failure_message_for_should
           ["expected that #{@vm.name} should have file '#{@path}'",
             @content && !@results[:content] && "with content #{@content.inspect}, but actual content is:\n#{@actual_content.inspect}\n",
-            @owner && !@results[:owner] && "with owner #{@owner}, but actual owner is #{@actual_owner}"].delete_if { |a| !a }.join(" ")
+            @owner && !@results[:owner] && "with owner #{@owner}, but actual owner is #{@actual_owner}",
+            @mode && !@results[:mode] && "with mode #{@mode.to_s(8)}(octal), but actual mode is #{@actual_mode}(octal)"].delete_if { |a| !a }.join(" ")
         end
 
         def failure_message_for_should_not
@@ -56,7 +69,8 @@ module Foodtaster
         def description
           ["have file '#{@path}'",
             @content && "with content #{@content.inspect}",
-            @owner && "with owner #{@owner}"].delete_if { |a| !a }.join(" ")
+            @owner && "with owner #{@owner}",
+            @mode && "with mode #{@mode}"].delete_if { |a| !a }.join(" ")
         end
       end
 
