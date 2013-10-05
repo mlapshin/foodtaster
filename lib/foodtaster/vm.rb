@@ -38,7 +38,7 @@ module Foodtaster
     end
 
     def rollback
-      Foodtaster.logger.info "#{name}: Rollbacking VM"
+      Foodtaster.logger.info "#{name}: Rolling back VM"
       @client.rollback_vm(name)
     end
 
