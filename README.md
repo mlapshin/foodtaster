@@ -36,7 +36,7 @@ describe "nginx::default" do
     vm0.should open_page("http://localhost/")
 
     vm0.should have_file("/etc/init.d/nginx")
-    vm0.should have_file("/etc/nginx/nginx.conf").with_content(/gzip on/)
+    vm0.should have_file("/etc/nginx/nginx.conf").with_content(/gzip on/).with_mode(0644)
   end
 
   it "should have valid nginx config" do
