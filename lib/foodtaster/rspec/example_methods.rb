@@ -19,6 +19,8 @@ module Foodtaster
         vm.run_chef(@previous_chef_config)
       end
 
+      alias :repeat_chef_run :rerun_chef_on
+
       private
 
       class ChefConfig
