@@ -1,7 +1,7 @@
 module Foodtaster
   class Config
     %w(log_level drb_port vagrant_binary shutdown_vms
-       skip_rollback).each do |attr|
+       skip_rollback start_server).each do |attr|
       attr_accessor attr.to_sym
     end
 
@@ -11,6 +11,7 @@ module Foodtaster
       @vagrant_binary = 'vagrant'
       @shutdown_vms = false
       @skip_rollback = false
+      @start_server = true
     end
 
     def self.default

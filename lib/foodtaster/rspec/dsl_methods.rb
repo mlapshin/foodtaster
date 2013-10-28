@@ -3,6 +3,7 @@ module Foodtaster
     module DslMethods
       def require_vm(vm_name)
         Foodtaster::RSpecRun.current.require_vm(vm_name)
+
         let(vm_name) { get_vm(vm_name) }
       end
 

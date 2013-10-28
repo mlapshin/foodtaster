@@ -24,7 +24,6 @@ module Foodtaster
     def start
       at_exit { self.stop }
 
-      Foodtaster.logger.debug "Starting Foodtaster specs run"
       start_server_and_connect_client
       prepare_required_vms
     end
@@ -60,14 +59,21 @@ module Foodtaster
       self.required_vm_names.each { |vm_name| get_vm(vm_name).shutdown }
     end
 
-    def start_server_and_connect_client(drb_port = Foodtaster.config.drb_port)
+    def start_server_and_connect_client
+      drb_port = Foodtaster.config.drb_port
+
+      start_server(drb_port) if Foodtaster.config.start_server
+      connect_client(drb_port)
+    end
+
+    def start_server(drb_port)
+      Foodtaster.logger.debug "Starting Foodtaster specs run"
+
       vagrant_binary = Foodtaster.config.vagrant_binary
       vagrant_server_cmd = "#{vagrant_binary} foodtaster-server #{drb_port.to_s} &> /tmp/vagrant-foodtaster-server-output.txt"
 
       @server_pid = Process.spawn(vagrant_server_cmd, pgroup: true)
       Foodtaster.logger.debug "Started foodtaster-server on port #{drb_port} with PID #{@server_pid}"
-
-      connect_client(drb_port)
     end
 
     def connect_client(drb_port)
