@@ -15,7 +15,15 @@ module Foodtaster
      :run_chef_on_vm, :execute_command_on_vm,
      :shutdown_vm].each do |method_name|
       define_method method_name do |*args|
-        @v.send(method_name, *args)
+        begin
+          @v.send(method_name, *args)
+        rescue DRb::DRbUnknownError => e
+          puts '='*30
+          puts 'Folowing error was raised on server: '
+          puts e.unknown.buf
+          puts '='*30
+          raise e
+        end
       end
     end
 
