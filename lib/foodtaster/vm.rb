@@ -53,6 +53,11 @@ module Foodtaster
       ExecResult.new(exec_result_hash)
     end
 
+    def execute_as(user, command)
+      cmd = %Q[sudo su -l #{user} -c "#{command}"]
+      self.execute cmd
+    end
+
     def run_chef(config)
       Foodtaster.logger.info "#{name}: Running Chef with Run List #{config[:run_list].join(', ')}"
       Foodtaster.logger.debug "#{name}: with JSON: #{config[:json].inspect}"
