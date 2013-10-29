@@ -1,7 +1,9 @@
 require 'set'
+require 'foodtaster/server'
 
 module Foodtaster
   class RSpecRun
+    attr_accessor :server_pid
     def initialize
       @required_vm_names = Set.new
       @client = nil
@@ -33,7 +35,7 @@ module Foodtaster
 
       puts "" # newline after rspec output
       shutdown_required_vms if Foodtaster.config.shutdown_vms
-      terminate_server
+      terminate_server(server_pid)
       @stopped = true
     end
 
@@ -67,46 +69,15 @@ module Foodtaster
     end
 
     def start_server(drb_port)
-      Foodtaster.logger.debug "Starting Foodtaster specs run"
+      @server_pid = Foodtaster::Server.start(drb_port)
+    end
 
-      vagrant_binary = Foodtaster.config.vagrant_binary
-      vagrant_server_cmd = "#{vagrant_binary} foodtaster-server #{drb_port.to_s} &> /tmp/vagrant-foodtaster-server-output.txt"
-
-      @server_pid = Process.spawn(vagrant_server_cmd, pgroup: true)
-      Foodtaster.logger.debug "Started foodtaster-server on port #{drb_port} with PID #{@server_pid}"
+    def terminate_server(server_pid)
+      Foodtaster::Server.terminate(server_pid)
     end
 
     def connect_client(drb_port)
-      retry_count = 0
-      begin
-        sleep 0.2
-        @client = Foodtaster::Client.new(drb_port)
-      rescue DRb::DRbConnError => e
-        Foodtaster.logger.debug "DRb connection failed: #{e.message}"
-        retry_count += 1
-        retry if retry_count < 20
-      end
-
-      if @client.nil?
-        server_output = File.read("/tmp/vagrant-foodtaster-server-output.txt")
-
-        Foodtaster.logger.fatal "Cannot start or connect to Foodtaster DRb server."
-        Foodtaster.logger.fatal "Server output:\n#{server_output}\n"
-
-        exit 1
-      else
-        Foodtaster.logger.debug "DRb connection established"
-      end
-    end
-
-    def terminate_server
-      pgid = Process.getpgid(@server_pid) rescue 0
-
-      if pgid > 0
-        Process.kill("INT", -pgid)
-        Process.wait(-pgid)
-        Foodtaster.logger.debug "Terminated foodtaster-server process"
-      end
+      @client = Foodtaster::Client.connect(drb_port)
     end
   end
 end
