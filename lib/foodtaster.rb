@@ -4,9 +4,10 @@ require 'foodtaster/rspec'
 require 'logger'
 
 module Foodtaster
-  autoload :Client, 'foodtaster/client'
-  autoload :Vm,     'foodtaster/vm'
-  autoload :RSpecRun, 'foodtaster/rspec_run'
+  autoload :Client,        'foodtaster/client'
+  autoload :ServerProcess, 'foodtaster/server_process'
+  autoload :Vm,            'foodtaster/vm'
+  autoload :RSpecRun,      'foodtaster/rspec_run'
 
   class << self
     def logger

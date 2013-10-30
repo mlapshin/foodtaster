@@ -1,5 +1,4 @@
 require 'set'
-require 'foodtaster/server'
 
 module Foodtaster
   class RSpecRun
@@ -7,7 +6,7 @@ module Foodtaster
     def initialize
       @required_vm_names = Set.new
       @client = nil
-      @server_pid = nil
+      @server_process = nil
       @stopped = false
     end
 
@@ -69,11 +68,11 @@ module Foodtaster
     end
 
     def start_server(drb_port)
-      @server_pid = Foodtaster::Server.start(drb_port)
+      @server_process = Foodtaster::ServerProcess.new(drb_port)
     end
 
     def terminate_server(server_pid)
-      Foodtaster::Server.terminate(server_pid)
+      @server_process.terminate
     end
 
     def connect_client(drb_port)
