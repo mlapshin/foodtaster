@@ -4,7 +4,7 @@ module Foodtaster
   class Client
     MAX_ATTEMPTS = 20
 
-    def self.connect(drb_port)
+    def self.connect(drb_port, server_process = nil)
       attempt_index = 1
       begin
         sleep 0.2
@@ -12,7 +12,7 @@ module Foodtaster
       rescue DRb::DRbConnError => e
         Foodtaster.logger.debug "DRb connection failed (attempt #{attempt_index}/#{MAX_ATTEMPTS}): #{e.message}"
         attempt_index += 1
-        retry if attempt_index <= MAX_ATTEMPTS
+        retry if attempt_index <= MAX_ATTEMPTS && (server_process.nil? || server_process.alive?)
       end
 
       if client

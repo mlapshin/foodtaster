@@ -99,7 +99,7 @@ module Foodtaster
     end
 
     def connect_client(drb_port)
-      @client = Foodtaster::Client.connect(drb_port)
+      @client = Foodtaster::Client.connect(drb_port, @server_process)
     end
   end
 end
