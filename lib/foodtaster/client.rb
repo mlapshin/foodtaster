@@ -3,27 +3,21 @@ require 'drb'
 module Foodtaster
   class Client
     def self.connect(drb_port)
-      retry_count = 0
+      retry_count = 1
       begin
         sleep 0.2
         client = Foodtaster::Client.new(drb_port)
       rescue DRb::DRbConnError => e
-        Foodtaster.logger.debug "DRb connection failed: #{e.message}"
+        Foodtaster.logger.debug "Try #{retry_count}: DRb connection failed: #{e.message}"
         retry_count += 1
-        retry if retry_count < 20
+        retry if retry_count <= 20
       end
 
-      if client.nil?
-        server_output = File.read("/tmp/vagrant-foodtaster-server-output.txt")
-
-        Foodtaster.logger.fatal "Cannot start or connect to Foodtaster DRb server."
-        Foodtaster.logger.fatal "Server output:\n#{server_output}\n"
-
-        exit 1
-      else
+      if client
         Foodtaster.logger.debug "DRb connection established"
+      else
+        Foodtaster.logger.debug "Can't connect to server"
       end
-
       client
     end
 
