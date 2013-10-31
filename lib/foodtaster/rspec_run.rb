@@ -63,11 +63,13 @@ module Foodtaster
     def setup_signal_handlers
       terminator = proc {
         self.stop
+        exit 1
       }
-
-      at_exit(&terminator)
       trap("INT", &terminator)
       trap("TERM", &terminator)
+      at_exit do
+        self.stop
+      end
     end
 
     def prepare_required_vms

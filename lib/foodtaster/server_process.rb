@@ -6,9 +6,8 @@ module Foodtaster
       Foodtaster.logger.debug "Starting Foodtaster specs run"
 
       vagrant_binary = Foodtaster.config.vagrant_binary
-      vagrant_server_cmd = "#{vagrant_binary} foodtaster-server #{drb_port}"
 
-      @in, @out, wait_thr = Open3.popen2(vagrant_server_cmd, err: [:child, :out])
+      @in, @out, wait_thr = Open3.popen2e(vagrant_binary, "foodtaster-server", drb_port.to_s, pgroup: true)
       @pid = wait_thr.pid
       Foodtaster.logger.debug "Started foodtaster-server on port #{drb_port} with PID #{@pid}"
     end
@@ -22,11 +21,11 @@ module Foodtaster
     end
 
     def terminate
-      @in.close
-      @out.close
       if alive?
-        Process.kill("INT", @pid)
-        Process.wait(@pid)
+        @in.close
+        @out.close
+        Process.kill("INT", -@pid)
+        Process.wait(-@pid) rescue nil
         Foodtaster.logger.debug "Terminated foodtaster-server process"
       end
     end
