@@ -29,7 +29,7 @@ module Foodtaster
         prepare_required_vms
       else
         if @server_process
-          Foodtaster.logger.fatal "Failed to start server: #{@server_process.output}"
+          Foodtaster.logger.fatal "Failed to start server:\n#{@server_process.output}"
         else
           Foodtaster.logger.fatal "Failed to connect to server"
         end
