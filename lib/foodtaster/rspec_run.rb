@@ -22,8 +22,7 @@ module Foodtaster
     end
 
     def start
-      at_exit { self.stop }
-
+      setup_signal_handlers
       start_server_and_connect_client
       prepare_required_vms
     end
@@ -50,6 +49,16 @@ module Foodtaster
     end
 
     private
+
+    def setup_signal_handlers
+      terminator = proc {
+        self.stop
+      }
+
+      at_exit(&terminator)
+      trap("INT", &terminator)
+      trap("TERM", &terminator)
+    end
 
     def prepare_required_vms
       self.required_vm_names.each { |vm_name| get_vm(vm_name).prepare }
