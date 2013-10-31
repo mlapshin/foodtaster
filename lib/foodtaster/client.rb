@@ -2,22 +2,25 @@ require 'drb'
 
 module Foodtaster
   class Client
+    MAX_ATTEMPTS = 20
+
     def self.connect(drb_port)
-      retry_count = 1
+      attempt_index = 1
       begin
         sleep 0.2
         client = Foodtaster::Client.new(drb_port)
       rescue DRb::DRbConnError => e
-        Foodtaster.logger.debug "Try #{retry_count}: DRb connection failed: #{e.message}"
-        retry_count += 1
-        retry if retry_count <= 20
+        Foodtaster.logger.debug "DRb connection failed (attempt #{attempt_index}/#{MAX_ATTEMPTS}): #{e.message}"
+        attempt_index += 1
+        retry if attempt_index <= MAX_ATTEMPTS
       end
 
       if client
         Foodtaster.logger.debug "DRb connection established"
       else
-        Foodtaster.logger.debug "Can't connect to server"
+        Foodtaster.logger.debug "Can't connect to Foodtaster DRb Server"
       end
+
       client
     end
 

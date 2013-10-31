@@ -29,10 +29,11 @@ module Foodtaster
         prepare_required_vms
       else
         if @server_process
-          Foodtaster.logger.fatal "Failed to start server:\n#{@server_process.output}"
+          Foodtaster.logger.fatal "Failed to start Foodtaster DRb Server:\n\n#{@server_process.output}"
         else
-          Foodtaster.logger.fatal "Failed to connect to server"
+          Foodtaster.logger.fatal "Failed to connect to Foodtaster DRb Server"
         end
+
         exit 1
       end
     end
@@ -40,10 +41,10 @@ module Foodtaster
     def stop
       return if @stopped
 
+      @stopped = true
       puts "" # newline after rspec output
       shutdown_required_vms if Foodtaster.config.shutdown_vms
       terminate_server
-      @stopped = true
     end
 
     def client
@@ -65,8 +66,10 @@ module Foodtaster
         self.stop
         exit 1
       }
+
       trap("INT", &terminator)
       trap("TERM", &terminator)
+
       at_exit do
         self.stop
       end
