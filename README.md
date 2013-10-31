@@ -1,4 +1,4 @@
-# Foodtaster
+# Foodtæster
 
 Foodtaster is a library for testing your Chef code with RSpec. Specs
 are actually executed on VirtualBox machine(s) managed by
