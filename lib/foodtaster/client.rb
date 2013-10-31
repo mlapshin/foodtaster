@@ -28,10 +28,8 @@ module Foodtaster
          begin
            @v.send(method_name, *args)
          rescue DRb::DRbUnknownError => e
-           puts '='*30
-           puts 'Folowing error was raised on server: '
-           p e.unknown.buf
-           puts '='*30
+           message = "Folowing error was raised on server:\n#{e.unknown.buf}"
+           Foodtaster.logger.fatal(message)
            raise e
          end
        end

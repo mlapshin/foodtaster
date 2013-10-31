@@ -15,11 +15,7 @@ module Foodtaster
           vm = get_vm(vm_name)
           vm.rollback unless skip_rollback
 
-          begin
-            run_chef_on(vm_name, &block)
-          rescue DRb::DRbUnknownError => e
-            raise RuntimeError, "Chef Run failed: #{e.message}"
-          end
+          run_chef_on(vm_name, &block)
         end
       end
     end
