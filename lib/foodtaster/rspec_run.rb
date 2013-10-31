@@ -2,7 +2,6 @@ require 'set'
 
 module Foodtaster
   class RSpecRun
-    attr_accessor :server_pid
     def initialize
       @required_vm_names = Set.new
       @client = nil
@@ -34,7 +33,7 @@ module Foodtaster
 
       puts "" # newline after rspec output
       shutdown_required_vms if Foodtaster.config.shutdown_vms
-      terminate_server(server_pid)
+      terminate_server
       @stopped = true
     end
 
@@ -71,7 +70,7 @@ module Foodtaster
       @server_process = Foodtaster::ServerProcess.new(drb_port)
     end
 
-    def terminate_server(server_pid)
+    def terminate_server
       @server_process.terminate
     end
 
