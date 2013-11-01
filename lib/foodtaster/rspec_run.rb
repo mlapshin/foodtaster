@@ -25,7 +25,7 @@ module Foodtaster
       setup_signal_handlers
       start_server_and_connect_client
 
-      if @server_process.alive? && @client
+      if (@server_process.nil? || @server_process.alive?) && @client
         prepare_required_vms
       else
         if @server_process
@@ -95,7 +95,7 @@ module Foodtaster
     end
 
     def terminate_server
-      @server_process.terminate
+      @server_process.terminate if @server_process
     end
 
     def connect_client(drb_port)
