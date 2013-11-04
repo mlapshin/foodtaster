@@ -13,7 +13,7 @@ module Foodtaster
 
         before(:all) do
           vm = get_vm(vm_name)
-          vm.rollback unless skip_rollback
+          #vm.rollback unless skip_rollback
 
           run_chef_on(vm_name, &block)
         end
