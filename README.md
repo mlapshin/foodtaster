@@ -1,4 +1,4 @@
-# Foodtaster
+# Foodtæster
 
 Foodtaster is a library for testing your Chef code with RSpec. Specs
 are actually executed on VirtualBox machine(s) managed by
@@ -42,7 +42,7 @@ describe "nginx::default" do
   it "should have valid nginx config" do
     result = vm0.execute("nginx -t")
 
-    result.should be_successfull
+    result.should be_successful
     result.stdout.should include("/etc/nginx/nginx.conf syntax is ok")
   end
 end
