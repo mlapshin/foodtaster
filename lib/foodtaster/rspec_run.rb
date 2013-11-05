@@ -1,24 +1,11 @@
-require 'set'
-
 module Foodtaster
   class RSpecRun
+    attr_reader :client
+
     def initialize
-      @required_vm_names = Set.new
       @client = nil
       @server_process = nil
       @stopped = false
-    end
-
-    def require_vm(vm_name)
-      @required_vm_names.add(vm_name.to_sym)
-    end
-
-    def required_vm_names
-      @required_vm_names
-    end
-
-    def get_vm(vm_name)
-      Foodtaster::Vm.new(vm_name, @client)
     end
 
     def start
@@ -26,7 +13,7 @@ module Foodtaster
       start_server_and_connect_client
 
       if (@server_process.nil? || @server_process.alive?) && @client
-        prepare_required_vms
+        # prepare_required_vms
       else
         if @server_process
           Foodtaster.logger.fatal "Failed to start Foodtaster DRb Server:\n\n#{@server_process.output}"
@@ -43,7 +30,7 @@ module Foodtaster
 
       @stopped = true
       puts "" # newline after rspec output
-      shutdown_required_vms if Foodtaster.config.shutdown_vms
+      Vm.shutdown_running_vms if Foodtaster.config.shutdown_vms
       terminate_server
     end
 
@@ -73,14 +60,6 @@ module Foodtaster
       at_exit do
         self.stop
       end
-    end
-
-    def prepare_required_vms
-      self.required_vm_names.each { |vm_name| get_vm(vm_name).prepare }
-    end
-
-    def shutdown_required_vms
-      self.required_vm_names.each { |vm_name| get_vm(vm_name).shutdown }
     end
 
     def start_server_and_connect_client

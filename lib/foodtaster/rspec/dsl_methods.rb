@@ -2,9 +2,9 @@ module Foodtaster
   module RSpec
     module DslMethods
       def require_vm(vm_name)
-        Foodtaster::RSpecRun.current.require_vm(vm_name)
-
-        let(vm_name) { get_vm(vm_name) }
+        let(vm_name) do
+          get_vm(vm_name).tap { |vm| vm.prepare }
+        end
       end
 
       def run_chef_on(vm_name, options = {}, &block)

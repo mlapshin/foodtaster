@@ -1,3 +1,5 @@
+require 'set'
+
 module Foodtaster
   class Vm
     class ExecResult
@@ -18,18 +20,46 @@ module Foodtaster
 
     attr_reader :name
 
-    def initialize(name, client)
+    @@vms = Set.new
+
+    class << self
+      def register_vm(vm)
+        @@vms << vm
+      end
+
+      def shutdown_running_vms
+        @@vms.each do |vm|
+          vm.shutdown if vm.prepared?
+        end
+      end
+
+      def find_by_name(vm_name)
+        @@vms.find { |vm| vm.name == vm_name }
+      end
+
+      def get(vm_name)
+        find_by_name(vm_name) || self.new(vm_name)
+      end
+    end
+
+    def initialize(name)
       @name = name
-      @client = client
+      @client = Foodtaster::RSpecRun.current.client
 
       unless @client.vm_defined?(name)
         raise ArgumentError, "No machine defined with name #{name}"
       end
+
+      self.class.register_vm(self)
     end
 
     def prepare
       Foodtaster.logger.info "#{name}: Preparing VM"
       @client.prepare_vm(name)
+    end
+
+    def prepared?
+      @client.vm_prepared?(name)
     end
 
     def shutdown
