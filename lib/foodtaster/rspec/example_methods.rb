@@ -2,7 +2,9 @@ module Foodtaster
   module RSpec
     module ExampleMethods
       def get_vm(vm_name)
-        Foodtaster::Vm.get(vm_name)
+        Foodtaster::Vm.get(vm_name).tap do |vm|
+          vm.prepare unless vm.prepared?
+        end
       end
 
       def run_chef_on(vm_name, &block)

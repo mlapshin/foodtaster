@@ -53,13 +53,38 @@ module Foodtaster
       self.class.register_vm(self)
     end
 
+    def running?
+      @client.vm_running?(self.name)
+    end
+
+    def initial_snapshot_made?
+      @client.initial_snapshot_made_on_vm?(self.name)
+    end
+
+    def start!
+      Foodtaster.logger.info "#{name}: Power on machine"
+      @client.start_vm(self.name)
+    end
+
+    def make_initial_snapshot!
+      Foodtaster.logger.info "#{name}: Creating initial snapshot"
+      @client.make_initial_snapshot_on_vm(self.name)
+    end
+
     def prepare
       Foodtaster.logger.info "#{name}: Preparing VM"
-      @client.prepare_vm(name)
+
+      unless running?
+        self.start!
+      end
+
+      unless initial_snapshot_made?
+        self.make_initial_snapshot!
+      end
     end
 
     def prepared?
-      @client.vm_prepared?(name)
+      self.running? && self.initial_snapshot_made?
     end
 
     def shutdown

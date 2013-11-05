@@ -3,7 +3,7 @@ module Foodtaster
     module DslMethods
       def require_vm(vm_name)
         let(vm_name) do
-          get_vm(vm_name).tap { |vm| vm.prepare }
+          get_vm(vm_name)
         end
       end
 
