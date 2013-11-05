@@ -5,6 +5,8 @@ module Foodtaster
         let(vm_name) do
           get_vm(vm_name)
         end
+
+        before(:all) { get_vm(vm_name) }
       end
 
       def run_chef_on(vm_name, options = {}, &block)
