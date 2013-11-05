@@ -1,5 +1,7 @@
 # Foodtæster
 
+[![Gem Version](https://badge.fury.io/rb/foodtaster.png)](http://badge.fury.io/rb/foodtaster)
+
 Foodtaster is a library for testing your Chef code with RSpec. Specs
 are actually executed on VirtualBox machine(s) managed by
 [Vagrant](http://www.vagrantup.com/).
@@ -96,7 +98,21 @@ You are ready to write cookbook specs. Run them as usual with command:
 
     bundle exec rspec spec
 
+## Roadmap
+
+- more examples in [foodtaster-example](http://github.com/mlapshin/foodtaster-example) repo
+- tests/specs
+- documentation
+- comments in code
+- inline sahara plugin into vagrant-foodtaster-server
+- Capistrno support or just an example
+- Puppet support
+- LXC support
+
 ## Contributing
+
+If you found a bug or you wish to implement something from Roadmap,
+use this workflow:
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

@@ -6,7 +6,7 @@ require 'foodtaster/version'
 Gem::Specification.new do |gem|
   gem.name          = "foodtaster"
   gem.version       = Foodtaster::VERSION
-  gem.authors       = ["Mike Lapshin"]
+  gem.authors       = ["Mike Lapshin", "Serzh Nechyporchuk"]
   gem.email         = ["mikhail.a.lapshin@gmail.com"]
   gem.description   = %q{RSpec for Chef cookbooks run on Vagrant}
   gem.summary       = %q{Foodtaster is a library for testing your Chef code with RSpec.}
