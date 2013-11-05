@@ -1,4 +1,5 @@
 require 'drb'
+require 'foodtaster/version'
 
 module Foodtaster
   class Client
