@@ -31,7 +31,7 @@ module Foodtaster
          begin
            @v.send(method_name, *args)
          rescue DRb::DRbUnknownError => e
-           message = "Folowing error was raised on server:\n#{e.unknown.buf}"
+           message = "Folowing exception was raised on server:\n#{e.unknown.buf}"
            Foodtaster.logger.fatal(message)
            raise e
          end
@@ -49,12 +49,22 @@ module Foodtaster
        init
      end
 
+     private
 
      def init
        $stdout.extend DRbUndumped
        $stderr.extend DRbUndumped
 
        @v.redirect_stdstreams($stdout, $stderr)
+       check_version
+     end
+
+     def check_version
+       server_version = @v.version
+
+       if server_version != Foodtaster::VERSION
+         Foodtaster.logger.warn "Warning: Foodtaster DRb Server version doesn't match Foodtaster Gem version.\n\nDRb Server version: #{server_version}\nFoodtaster Gem version: #{Foodtaster::VERSION}\n"
+       end
      end
   end
 end
