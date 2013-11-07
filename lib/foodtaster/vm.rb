@@ -87,6 +87,10 @@ module Foodtaster
       self.running? && self.initial_snapshot_made?
     end
 
+    def ip
+      @client.vm_ip(name)
+    end
+
     def shutdown
       Foodtaster.logger.debug "#{name}: Shutting down VM"
       @client.shutdown_vm(name)
