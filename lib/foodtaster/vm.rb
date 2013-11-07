@@ -91,6 +91,14 @@ module Foodtaster
       @client.vm_ip(name)
     end
 
+    def put_file(local_fn, vm_fn)
+      @client.put_file_to_vm(name, local_fn, vm_fn)
+    end
+
+    def get_file(vm_fn, local_fn)
+      @client.get_file_from_vm(name, vm_fn, local_fn)
+    end
+
     def shutdown
       Foodtaster.logger.debug "#{name}: Shutting down VM"
       @client.shutdown_vm(name)
