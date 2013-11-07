@@ -2,10 +2,7 @@ module Foodtaster
   module RSpec
     module DslMethods
       def require_vm(vm_name)
-        let(vm_name) do
-          get_vm(vm_name)
-        end
-
+        define_method(vm_name) { get_vm(vm_name) }
         before(:all) { get_vm(vm_name) }
       end
 

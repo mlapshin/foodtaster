@@ -8,11 +8,14 @@ module Foodtaster
       end
 
       def run_chef_on(vm_name, &block)
-        chef_config = ChefConfig.new.tap{ |conf| block.call(conf) }.to_hash
-        @previous_chef_config = chef_config
+        chef_config = ChefConfig.new
+        instance_exec chef_config, &block
+        chef_config_as_hash = chef_config.to_hash
+
+        @previous_chef_config = chef_config_as_hash
 
         vm = get_vm(vm_name)
-        vm.run_chef(chef_config)
+        vm.run_chef(chef_config_as_hash)
       end
 
       def rerun_chef_on(vm_name)
