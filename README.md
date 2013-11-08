@@ -27,8 +27,12 @@ appreciated.
 ## Documentation
 
 To get more information about FT, read
-[Wiki](https://github.com/mlapshin/foodtaster/wiki) or go to
+[Wiki](https://github.com/mlapshin/foodtaster/wiki) or refer to
 [RDoc](http://rdoc.info/github/mlapshin/foodtaster/master/frames).
+
+If you have any questions or got in trouble, feel free to ask
+community in
+[Foodtaster Google Group](https://groups.google.com/forum/?#!forum/foodtaster).
 
 ## Quick Example
 
