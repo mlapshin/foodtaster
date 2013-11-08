@@ -32,7 +32,7 @@ To get more information about FT, read
 
 If you have any questions or got in trouble, feel free to ask
 community in
-[Foodtaster Google Group](https://groups.google.com/forum/?#!forum/foodtaster).
+[Foodtaster Google Group](http://groups.google.com/d/forum/foodtaster).
 
 ## Quick Example
 
