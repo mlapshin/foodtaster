@@ -24,6 +24,12 @@ to see Foodtaster in action.
 Foodtaster is on early development stage, so feedback is very
 appreciated.
 
+## Documentation
+
+To get more information about FT, read
+[Wiki](https://github.com/mlapshin/foodtaster/wiki) or go to
+[RDoc](http://rdoc.info/github/mlapshin/foodtaster/master/frames).
+
 ## Quick Example
 
 ```ruby

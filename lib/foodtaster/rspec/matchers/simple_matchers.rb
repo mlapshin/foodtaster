@@ -116,4 +116,3 @@ RSpec::Matchers.define :be_successful do |opts = {}|
     end
   end
 end
-
