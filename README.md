@@ -100,7 +100,7 @@ You are ready to write cookbook specs. Run them as usual with command:
 
 ## Roadmap
 
-- more examples in [foodtaster-example](http://github.com/mlapshin/foodtaster-example) repo
+- foodtaster-example-single-cookbook repo
 - tests/specs
 - documentation
 - comments in code

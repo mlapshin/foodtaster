@@ -38,18 +38,17 @@ RSpec::Matchers.define :have_package do |package|
   end
 end
 
-# TODO: I'm not sure if lsof is installed by default
 RSpec::Matchers.define :listen_port do |port|
   match do |vm|
-    ->{ vm.execute("sudo lsof -i :#{port.to_s} > /dev/null") }.should be_successful
+    vm.execute("lsof -i :#{port.to_s}").should be_successful
   end
 
   failure_message_for_should do |vm|
-    "expected that #{vm.name} should listen port '#{port}'"
+    "expected that #{vm.name} should listen to port '#{port}'"
   end
 
   failure_message_for_should_not do |vm|
-    "expected that #{vm.name} should not listen port '#{port}'"
+    "expected that #{vm.name} should not listen to port '#{port}'"
   end
 
   description do
