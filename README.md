@@ -57,9 +57,9 @@ end
 
 ## Installation
 
-First, install Vagrant for your system following
-[official instructions](http://docs.vagrantup.com/v2/installation/index.html).
-Then install
+First, install [VirtualBox](http://www.virtualbox.org/) and
+[Vagrant](http://docs.vagrantup.com/v2/installation/index.html). Then
+install
 [vagrant-foodtaster-server](http://github.com/mlapshin/vagrant-foodtaster-server)
 plugin:
 
@@ -73,25 +73,17 @@ In your Chef or Cookbook repository, create a basic Gemfile:
 
     gem 'foodtaster'
 
-Then, create a Vagrantfile describing VMs you need for specs. Here is
-[example
-Vagrantfile](http://raw.github.com/mlapshin/foodtaster-example/master/Vagrantfile).
+Create a Vagrantfile describing VMs you need for specs. [Read
+Wiki](https://github.com/mlapshin/foodtaster/wiki/Vagrantfile-Requirements)
+for detailed explanation and examples.
 
-Create `spec` folder with `spec_helper.rb` file:
+Create `spec` folder with basic `spec_helper.rb` file:
 
 ```ruby
 require 'foodtaster'
-
-RSpec.configure do |config|
-  config.color_enabled = true
-end
-
-Foodtaster.configure do |config|
-  config.log_level = :info
-end
 ```
 
-You are ready to write cookbook specs. Run them as usual with command:
+You are now ready to write cookbook specs. Run them as usual with command:
 
     bundle exec rspec spec
 
