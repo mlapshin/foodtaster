@@ -12,10 +12,14 @@ initial 'clean' state which removes any modifications made by
 previously executed specs. It allows you to independently test different
 cookbooks on a single VM.
 
-Of course, you aren't limited by just one VM for your specs, you may
+You aren't limited by just one VM for your specs, you may
 run as many as you need. PostgreSQL replication, load balancing and
 even entire application environments becomes testable (of course, if
-you have enought amount of RAM).
+you have enought amount of RAM for all your VMs).
+
+Check out
+[foodtaster-example repository](http://github.com/mlapshin/foodtaster-example)
+to see Foodtaster in action.
 
 Foodtaster is on early development stage, so feedback is very
 appreciated.
@@ -34,11 +38,12 @@ describe "nginx::default" do
   it "should install nginx as a daemon" do
     vm0.should have_package 'nginx'
     vm0.should have_user('www-data').in_group('www-data')
+    vm0.should have_running_process('nginx')
     vm0.should listen_port(80)
-    vm0.should open_page("http://localhost/")
 
-    vm0.should have_file("/etc/init.d/nginx")
-    vm0.should have_file("/etc/nginx/nginx.conf").with_content(/gzip on/).with_mode(0644)
+    vm0.should have_file("/etc/nginx/nginx.conf")
+      .with_content(/gzip on/)
+      .with_mode(0644)
   end
 
   it "should have valid nginx config" do
@@ -52,28 +57,20 @@ end
 
 ## Installation
 
-First, install Vagrant for your system following [official
-instructions](http://docs.vagrantup.com/v2/installation/index.html).
-Then, install two Vagrant plugins:
-[sahara](http://github.com/jedi4ever/sahara) and
-[vagrant-foodtaster-server](http://github.com/mlapshin/vagrant-foodtaster-server):
+First, install Vagrant for your system following
+[official instructions](http://docs.vagrantup.com/v2/installation/index.html).
+Then install
+[vagrant-foodtaster-server](http://github.com/mlapshin/vagrant-foodtaster-server)
+plugin:
 
-    vagrant plugin install sahara
     vagrant plugin install vagrant-foodtaster-server
-
-That's all, you are ready to go.
 
 ## Usage
 
-Check out [foodtaster-example
-repository](http://github.com/mlapshin/foodtaster-example) or
-follow this instructions.
-
-In your Chef repository, create a basic Gemfile:
+In your Chef or Cookbook repository, create a basic Gemfile:
 
     source 'https://rubygems.org/'
 
-    gem 'rspec'
     gem 'foodtaster'
 
 Then, create a Vagrantfile describing VMs you need for specs. Here is
