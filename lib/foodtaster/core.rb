@@ -1,6 +1,4 @@
 require 'foodtaster/config'
-require 'foodtaster/rspec'
-
 require 'logger'
 
 module Foodtaster
@@ -26,8 +24,8 @@ module Foodtaster
     end
 
     def configure(&config_block)
-      Foodtaster::Rspec.configure
-      config.configure(&config_block) if config_block
+      config.configure(&config_block)
     end
   end
 end
+
