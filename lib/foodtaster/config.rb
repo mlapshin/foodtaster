@@ -23,14 +23,4 @@ module Foodtaster
       @start_server = true
     end
   end
-
-  class << self
-    def config
-      @config ||= Config.default
-    end
-
-    def configure(&config_block)
-      config.configure(&config_block)
-    end
-  end
 end

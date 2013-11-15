@@ -20,5 +20,13 @@ module Foodtaster
         end
       end
     end
+
+    def config
+      @config ||= Config.default
+    end
+
+    def configure(&config_block)
+      config.configure(&config_block)
+    end
   end
 end
