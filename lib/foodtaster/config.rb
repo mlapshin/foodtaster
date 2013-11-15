@@ -1,9 +1,18 @@
 module Foodtaster
   class Config
-    %w(log_level drb_port vagrant_binary shutdown_vms
-       skip_rollback start_server).each do |attr|
-      attr_accessor attr.to_sym
+    attr_accessor :log_level, :drb_port, :vagrant_binary,
+      :shutdown_vms, :skip_rollback, :start_server
+
+    def self.default
+      self.new
     end
+
+    def configure
+      yield(self)
+      self
+    end
+
+    private
 
     def initialize
       @log_level = :info
@@ -13,10 +22,6 @@ module Foodtaster
       @skip_rollback = false
       @start_server = true
     end
-
-    def self.default
-      self.new
-    end
   end
 
   class << self
@@ -24,12 +29,8 @@ module Foodtaster
       @config ||= Config.default
     end
 
-    def configure
-      if block_given?
-        yield(self.config)
-      else
-        raise ArgumentError, "No block given"
-      end
+    def configure(&config_block)
+      config.configure(&config_block)
     end
   end
 end
