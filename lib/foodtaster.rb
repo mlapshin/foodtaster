@@ -26,7 +26,7 @@ module Foodtaster
     end
 
     def configure(&config_block)
-      Foodtaster::Rspec.configure
+      Foodtaster::RSpec.configure
       config.configure(&config_block) if config_block
     end
   end
