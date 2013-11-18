@@ -15,7 +15,7 @@ module Foodtaster
     private
 
     def initialize
-      @log_level = :info
+      @log_level = :warn
       @drb_port = 35672
       @vagrant_binary = 'vagrant'
       @shutdown_vms = false

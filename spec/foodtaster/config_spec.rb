@@ -4,7 +4,7 @@ describe Foodtaster::Config do
   context 'default options' do
     subject { described_class.new }
 
-    its(:log_level)      { should == :info }
+    its(:log_level)      { should == :warn }
     its(:drb_port)       { should == 35672 }
     its(:vagrant_binary) { should == 'vagrant' }
     its(:shutdown_vms)   { should == false }
