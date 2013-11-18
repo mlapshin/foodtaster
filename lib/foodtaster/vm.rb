@@ -8,9 +8,11 @@ module Foodtaster
       attr_reader :exit_status
 
       def initialize(hash)
-        @stderr = hash[:stderr].to_s
-        @stdout = hash[:stdout].to_s
-        @exit_status = hash[:exit_status]
+        if hash
+          @stderr = hash[:stderr].to_s.chomp
+          @stdout = hash[:stdout].to_s.chomp
+          @exit_status = hash[:exit_status]
+        end
       end
 
       def successful?
@@ -38,13 +40,14 @@ module Foodtaster
       end
 
       def get(vm_name)
-        find_by_name(vm_name) || self.new(vm_name)
+        find_by_name(vm_name) ||
+          self.new(vm_name, Foodtaster::RSpecRun.current.client)
       end
     end
 
-    def initialize(name)
+    def initialize(name, client)
       @name = name
-      @client = Foodtaster::RSpecRun.current.client
+      @client = client
 
       unless @client.vm_defined?(name)
         raise ArgumentError, "No machine defined with name #{name}"
@@ -112,10 +115,11 @@ module Foodtaster
     def execute(command)
       Foodtaster.logger.debug "#{name}: Executing #{command}"
       exec_result_hash = @client.execute_command_on_vm(name, command)
+      exec_result = ExecResult.new(exec_result_hash)
 
-      Foodtaster.logger.debug "#{name}: Finished with #{exec_result_hash[:exit_status]}"
-      Foodtaster.logger.debug "#{name}: STDOUT: #{exec_result_hash[:stdout].to_s.chomp}"
-      Foodtaster.logger.debug "#{name}: STDERR: #{exec_result_hash[:stderr].to_s.chomp}"
+      Foodtaster.logger.debug "#{name}: Finished with #{exec_result.exit_status}"
+      Foodtaster.logger.debug "#{name}: STDOUT: #{exec_result.stdout}"
+      Foodtaster.logger.debug "#{name}: STDERR: #{exec_result.stderr}"
 
       ExecResult.new(exec_result_hash)
     end
@@ -126,6 +130,8 @@ module Foodtaster
     end
 
     def run_chef(config)
+      fail ArgumentError, "#{config.inspect} should have :run_list." unless config[:run_list]
+
       Foodtaster.logger.info "#{name}: Running Chef with Run List #{config[:run_list].join(', ')}"
       Foodtaster.logger.debug "#{name}: with JSON: #{config[:json].inspect}"
       @client.run_chef_on_vm(name, config)
