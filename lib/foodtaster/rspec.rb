@@ -4,7 +4,7 @@ module Foodtaster
     autoload :DslMethods, "foodtaster/rspec/dsl_methods"
 
     def self.configure
-      RSpec::configure do |config|
+      ::RSpec::configure do |config|
         config.include Foodtaster::RSpec::ExampleMethods
         config.extend Foodtaster::RSpec::DslMethods
 
