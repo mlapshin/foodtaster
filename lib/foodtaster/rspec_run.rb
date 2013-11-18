@@ -12,15 +12,11 @@ module Foodtaster
       setup_signal_handlers
       start_server_and_connect_client
 
-      if (@server_process.nil? || @server_process.alive?) && @client
-        # prepare_required_vms
-      else
-        if @server_process
-          Foodtaster.logger.fatal "Failed to start Foodtaster DRb Server:\n\n#{@server_process.output}"
-        else
-          Foodtaster.logger.fatal "Failed to connect to Foodtaster DRb Server"
-        end
-
+      if @client && @server_process && !@server_process.alive?
+        Foodtaster.logger.fatal "Failed to start Foodtaster DRb Server:\n\n#{@server_process.output}"
+        exit 1
+      elsif !@client || !@server_process
+        Foodtaster.logger.fatal "Failed to connect to Foodtaster DRb Server"
         exit 1
       end
     end
@@ -65,12 +61,12 @@ module Foodtaster
     def start_server_and_connect_client
       drb_port = Foodtaster.config.drb_port
 
-      start_server(drb_port) if Foodtaster.config.start_server
-      connect_client(drb_port)
+      @server_process = start_server(drb_port) if Foodtaster.config.start_server
+      @client = connect_client(drb_port)
     end
 
     def start_server(drb_port)
-      @server_process = Foodtaster::ServerProcess.new(drb_port)
+      Foodtaster::ServerProcess.new(drb_port)
     end
 
     def terminate_server
@@ -78,7 +74,7 @@ module Foodtaster
     end
 
     def connect_client(drb_port)
-      @client = Foodtaster::Client.connect(drb_port, @server_process)
+      Foodtaster::Client.connect(drb_port, @server_process)
     end
   end
 end
