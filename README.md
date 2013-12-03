@@ -1,4 +1,5 @@
-->![Foodtaster](https://raw.github.com/mlapshin/foodtaster/master/logo.png)<-
+![Foodtaster](https://raw.github.com/mlapshin/foodtaster/master/logo.png)
+---------------------
 
 [![Gem Version](https://badge.fury.io/rb/foodtaster.png)](http://badge.fury.io/rb/foodtaster)
 
