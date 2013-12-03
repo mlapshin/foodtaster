@@ -124,3 +124,5 @@ use this workflow:
 
 Foodtaster is distributed under [MIT
 License](http://raw.github.com/mlapshin/foodtaster/master/LICENSE).
+
+Foodtaster Logo is designed by [Oleg Sugatov](https://plus.google.com/u/0/+%D0%9E%D0%BB%D0%B5%D0%B3%D0%A1%D1%83%D0%B3%D0%B0%D1%82%D0%BE%D0%B2/posts).
