@@ -1,10 +1,8 @@
 require 'timeout'
 
-# RSpec::Matchers.send(:include, VagrantHelper::Matchers::MatcherMethods)
-
 RSpec::Matchers.define :have_running_process do |process|
   match do |vm|
-    vm.execute("pgrep #{process}").successful?
+    vm.execute("pgrep -f #{process}").successful?
   end
 
   failure_message_for_should do |vm|
@@ -71,26 +69,6 @@ RSpec::Matchers.define :have_group do |group|
 
   description do
     "have group '#{group}'"
-  end
-end
-
-RSpec::Matchers.define :open_page do |address|
-  match do |vm|
-    result = vm.execute("wget #{address} -O /tmp/test-page").successful?
-    vm.execute("rm /tmp/test-page")
-    result
-  end
-
-  failure_message_for_should do |vm|
-    "expected that #{vm.name} should open page '#{address}'"
-  end
-
-  failure_message_for_should_not do |vm|
-    "expected that #{vm.name} should not open page '#{address}'"
-  end
-
-  description do
-    "open page '#{address}'"
   end
 end
 
