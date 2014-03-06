@@ -1,7 +1,7 @@
 ![Foodtaster](https://raw.github.com/mlapshin/foodtaster/master/logo.png)
 ---------------------
 
-[![Gem Version](https://badge.fury.io/rb/foodtaster.png)](http://badge.fury.io/rb/foodtaster)
+[![Gem Version](https://badge.fury.io/rb/foodtaster.png)](http://badge.fury.io/rb/foodtaster) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mlapshin/foodtaster/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 Foodtaster is a library for testing your Chef code with RSpec. Specs
 are actually executed on VirtualBox machine(s) managed by
